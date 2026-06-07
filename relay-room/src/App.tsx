@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ChatApp } from './components/ChatApp'
 import { hasCometChatCredentials } from './cometchat/constants'
-import { setupCometChat } from './cometchat/setupCometChat'
+import { getCometChatErrorMessage, setupCometChat } from './cometchat/setupCometChat'
 import './App.css'
 
 function App() {
@@ -13,13 +13,23 @@ function App() {
       return
     }
 
+    let cancelled = false
+
     setupCometChat()
-      .then(() => setIsReady(true))
-      .catch((err: unknown) => {
-        const message =
-          err instanceof Error ? err.message : 'Failed to connect to CometChat'
-        setError(message)
+      .then(() => {
+        if (!cancelled) {
+          setIsReady(true)
+        }
       })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setError(getCometChatErrorMessage(err))
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   if (!hasCometChatCredentials()) {
