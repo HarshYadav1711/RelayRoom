@@ -1,0 +1,9 @@
+{
+  "$schema": "https://cometchat.com/schemas/config.json",
+  "version": 1,
+  "framework": "reactjs",
+  "envPrefix": "VITE_",
+  "typescript": true,
+  "appId": "16798260800ae9ff4",
+  "region": "in"
+}
